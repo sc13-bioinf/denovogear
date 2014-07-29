@@ -288,6 +288,12 @@ int callDenovoFromBCF(string ped_file, string bcf_file,
   while ( vcf_read(bp, hin, b) > 0 ) {
     int j = 0, flag =0;
     //printf("Position Number %d", pos++);
+
+    // skip long ref or alt
+    if (  strlen(b->ref) > 2047 or strlen(b->alt) > 2047 ) {
+        printf("\n BCF PARSING ERROR - REF/ALT > 2047 characters! Skipping %i %i", b->tid, b->pos);
+        continue;
+    }
     // PROCESS TRIOS
     for ( j=0; j<trio_count; j++) {
       int is_indel = bcf_2qcall(hout, b, trios[j],  &mom_snp, &dad_snp, 
