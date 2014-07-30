@@ -291,7 +291,7 @@ int callDenovoFromBCF(string ped_file, string bcf_file,
 
     // skip long ref or alt
     if (  strlen(b->ref) > 2047 or strlen(b->alt) > 2047 ) {
-        printf("\n BCF PARSING ERROR - REF/ALT > 2047 characters! Skipping %i %i", b->tid, b->pos);
+        cerr << endl << "BCF PARSING ERROR - REF/ALT > 2047 characters! Skipping " << b->tid << " " << b->pos << endl;
         continue;
     }
     // PROCESS TRIOS
