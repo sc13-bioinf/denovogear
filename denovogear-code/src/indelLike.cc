@@ -159,7 +159,7 @@ void trio_like_indel(indel_t *child,indel_t *mom, indel_t *dad, int flag,
       fo_vcf<<"RD_MOM="<<mom->depth<<";RD_DAD="<<dad->depth;
       fo_vcf<<";MQ_MOM="<<mom->rms_mapQ<<";MQ_DAD="<<dad->rms_mapQ;  
       fo_vcf<<";INDELcode="<<lookupIndel.snpcode(i,j)<<";\t";
-      fo_vcf<<"NULL_CONFIG(child/mom/dad):PP_NULL:DNM_CONFIG(child/mom/dad):PP_DNM:RD:MQ\t";
+      fo_vcf<<"NULL_CONFIG_child_mom_dad:PP_NULL:DNM_CONFIG_child_mom_dad:PP_DNM:RD:MQ\t";
       fo_vcf<<tgtIndel[i-1][j-1]<<":"<<pp_null<<":"; 
       fo_vcf<<tgtIndel[k-1][l-1]<<":"<<pp_denovo<<":"<<child->depth<<":"<<child->rms_mapQ; 
       fo_vcf<<"\n";

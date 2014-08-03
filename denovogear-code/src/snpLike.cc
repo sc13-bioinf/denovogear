@@ -188,7 +188,7 @@ void trio_like_snp( qcall_t child, qcall_t mom, qcall_t dad, int flag,
       fo_vcf<<"RD_MOM="<<mom.depth<<";RD_DAD="<<dad.depth;
       fo_vcf<<";MQ_MOM="<<mom.rms_mapQ<<";MQ_DAD="<<dad.rms_mapQ;  
       fo_vcf<<";SNPcode="<<lookup.snpcode(i,j)<<";code="<<lookup.code(i,j)<<";\t";
-      fo_vcf<<"NULL_CONFIG(child/mom/dad):PP_NULL:ML_NULL:DNM_CONFIG(child/mom/dad):PP_DNM:ML_DNM:RD:MQ\t";
+      fo_vcf<<"NULL_CONFIG_child_mom_dad:PP_NULL:ML_NULL:DNM_CONFIG_child_mom_dad:PP_DNM:ML_DNM:RD:MQ\t";
       fo_vcf<<tgt[i-1][j-1]<<":"<<pp_null<<":";  
       fo_vcf<<maxlike_null<<":";
       fo_vcf<<tgt[k-1][l-1]<<":"<<pp_denovo<<":"<<maxlike_denovo<<":"<<child.depth<<":"<<child.rms_mapQ; 

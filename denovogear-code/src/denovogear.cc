@@ -194,7 +194,7 @@ int writeVCFHeader(std::ofstream& fo_vcf, string op_vcf_f, string bcf_file, stri
   fo_vcf<<"##INFO=<ID=MQ_MOM,Number=1,Type=Integer,Description=\"Mapping quality for MOM\">\n";
   fo_vcf<<"##INFO=<ID=MQ_DAD,Number=1,Type=Integer,Description=\"Mapping quality for DAD\">\n";
   fo_vcf<<"##INFO=<ID=MQ_NORMAL,Number=1,Type=Integer,Description=\"Mapping quality for Normal sample in Paired Sample Analysis\">\n";
-  fo_vcf<<"##FORMAT=<ID=NULL_CONFIG(child/mom/dad),Number=1,Type=String,Description=\"NULL trio configuration\">\n";
+  fo_vcf<<"##FORMAT=<ID=NULL_CONFIG_child_mom_dad,Number=1,Type=String,Description=\"NULL trio configuration\">\n";
   fo_vcf<<"##FORMAT=<ID=PP_NULL,Number=1,Type=Float,Description=\"Posterior probability for the NULL configuration\">\n";
   fo_vcf<<"##FORMAT=<ID=ML_NULL,Number=1,Type=Float,Description=\"Maximum Likelihood for the NULL configuration\">\n";
   fo_vcf<<"##FORMAT=<ID=ML_DNM,Number=1,Type=Float,Description=\"Maximum Likelihood for the DNM configuration\">\n";
@@ -202,7 +202,7 @@ int writeVCFHeader(std::ofstream& fo_vcf, string op_vcf_f, string bcf_file, stri
   fo_vcf<<"##INFO=<ID=INDELcode,Number=1,Type=Integer,Description=\" \">\n"; //// Needs Detail
   fo_vcf<<"##INFO=<ID=PairSNPcode,Number=1,Type=Integer,Description=\" \">\n"; //// Needs Detail
   fo_vcf<<"##INFO=<ID=code,Number=1,Type=Integer,Description=\" \">\n"; //// Needs Detail
-  fo_vcf<<"##FORMAT=<ID=DNM_CONFIG(child/mom/dad),Number=1,Type=String,Description=\"DNM trio configuration\">\n";
+  fo_vcf<<"##FORMAT=<ID=DNM_CONFIG_child_mom_dad,Number=1,Type=String,Description=\"DNM trio configuration\">\n";
   fo_vcf<<"##FORMAT=<ID=PP_DNM,Number=1,Type=Float,Description=\"Posterior probability for the DNM configuration\">\n";
   fo_vcf<<"##FORMAT=<ID=RD,Number=1,Type=Integer,Description=\"Read Depth of the child\">\n";
   fo_vcf<<"##FORMAT=<ID=MQ,Number=1,Type=Integer,Description=\"Mapping quality of the child\">\n";
