@@ -185,6 +185,7 @@ void trio_like_snp( qcall_t child, qcall_t mom, qcall_t dad, int flag,
       fo_vcf<<alt<<"\t";
       fo_vcf<<"0\t";// Quality of the Call
       fo_vcf<<"PASS\t";// passed the read depth filter
+      fo_vcf<<"RD_CUT="<<RD_cutoff<<";";
       fo_vcf<<"RD_MOM="<<mom.depth<<";RD_DAD="<<dad.depth;
       fo_vcf<<";MQ_MOM="<<mom.rms_mapQ<<";MQ_DAD="<<dad.rms_mapQ;  
       fo_vcf<<";SNPcode="<<lookup.snpcode(i,j)<<";code="<<lookup.code(i,j)<<";\t";

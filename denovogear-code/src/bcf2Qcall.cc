@@ -32,9 +32,8 @@
 #include "kseq.h"
 
 
-#define MIN_READ_DEPTH 10
-#define MIN_READ_DEPTH_INDEL 10
-#define MIN_MAPQ 40 
+#define MIN_READ_DEPTH 1
+#define MIN_MAPQ 0 
 
 
 void writeToSNPObject(qcall_t* mom_snp, bcf1_t *b, bcf_hdr_t* h, int* g, int d, int mq, int& flag, int i, int i0) 
