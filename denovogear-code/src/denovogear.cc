@@ -194,7 +194,6 @@ int writeVCFHeader(std::ofstream& fo_vcf, string op_vcf_f, string bcf_file, stri
   fo_vcf<<"##mutation_rate_paired="<<pair_mrate<<"\n";
   fo_vcf<<"##mutation_rate_polymorphism="<<poly_rate<<"\n";
   fo_vcf<<"##mutation_rate_indel_scaling_constant="<<mu_scale<<"\n";
-  fo_vcf<<"##INFO=<ID=RD_CUT,Number=1,Type=Integer,Description=\"Read depth cutoff\">\n";
   fo_vcf<<"##INFO=<ID=RD_MOM,Number=1,Type=Integer,Description=\"Read depth for MOM\">\n";
   fo_vcf<<"##INFO=<ID=RD_DAD,Number=1,Type=Integer,Description=\"Read depth for DAD\">\n";
   fo_vcf<<"##INFO=<ID=RD_NORMAL,Number=1,Type=Integer,Description=\"Read depth for Normal sample in Paired Sample Analysis\">\n";
