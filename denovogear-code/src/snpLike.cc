@@ -34,10 +34,10 @@ using namespace std;
 // Calculate DNM and Null PP
 void trio_like_snp( qcall_t child, qcall_t mom, qcall_t dad, int flag, 
   vector<vector<string > > & tgt, lookup_snp_t & lookup, 
-  string op_vcf_f, ofstream& fo_vcf, double pp_cutoff, int RD_cutoff, int& n_site_pass)
+  string op_vcf_f, ofstream& fo_vcf, double pp_cutoff, int RD_cutoff_child_snv, int RD_cutoff_father_snv, int RD_cutoff_mother_snv, int& n_site_pass)
 {
   // Filter low read depths ( < 10 )
-  if (child.depth < RD_cutoff || mom.depth < RD_cutoff || dad.depth < RD_cutoff) {
+  if (child.depth < RD_cutoff_child_snv || mom.depth < RD_cutoff_mother_snv || dad.depth < RD_cutoff_father_snv) {
     return;
   }
   n_site_pass += 1;
@@ -175,6 +175,7 @@ void trio_like_snp( qcall_t child, qcall_t mom, qcall_t dad, int flag,
     cout<<" tgt_dnm(child/mom/dad): "<<tgt[k-1][l-1]<<" lookup: "<<lookup.code(k,l)<<" flag: "<<flag;
     cout<<" READ_DEPTH child: "<<child.depth<<" dad: "<<dad.depth<<" mom: "<<mom.depth;
     cout<<" MAPPING_QUALITY child: "<<child.rms_mapQ<<" dad: "<<dad.rms_mapQ<<" mom: "<<mom.rms_mapQ;
+    cout<<" RD_FILTERS child: "<<RD_cutoff_child_snv<<" dad: "<<RD_cutoff_father_snv<< " mom: "<<RD_cutoff_mother_snv; 
     cout<<endl;
 
     if(op_vcf_f != "EMPTY") {

@@ -68,7 +68,10 @@ using namespace RBD_LIBRARIES;
 #define VERSION "Denovogear0.5.4"
 #endif
 
-int RD_cutoff = 10; // cutoff for the read depth filter
+int RD_cutoff_child_snv = 10; // cutoff for the read depth filter for child
+int RD_cutoff_father_snv = 10; // cutoff for the read depth filter for father
+int RD_cutoff_mother_snv = 10; // cutoff for the read depth filter for father
+
 double PP_cutoff = 0.0001; // posterior probability cutoff
 
 
@@ -108,7 +111,9 @@ void usage()
   cerr<<"--pair_mrate:\t Mutation rate prior for paired sample analysis. [1e-9]\n";
   cerr<<"--indel_mu_scale:\t Scaling factor for indel mutation rate. [1]\n";
   cerr<<"--pp_cutoff:\t Posterior probability threshold. [0.0001]\n";
-  cerr<<"--rd_cutoff:\t Read depth filter, sites where either one of the sample have read depth less than this threshold are filtered out. [10]\n";
+  cerr<<"--rd_cutoff_child_snv:\t Read depth filter, snv sites where child read depth is less than this threshold are filtered out. [10]\n";
+  cerr<<"--rd_cutoff_father_snv:\t Read depth filter, snv sites where father read depth is less than this threshold are filtered out. [10]\n";
+  cerr<<"--rd_cutoff_mother_snv:\t Read depth filter, snv sites where mother read depth is less than this threshold are filtered out. [10]\n";
   cerr<<"--region:\t Region of the BCF file to perform denovo calling. [string of the form \"chr:start-end\"]\n";
   cerr<<endl;
   exit(1);
@@ -187,7 +192,9 @@ int writeVCFHeader(std::ofstream& fo_vcf, string op_vcf_f, string bcf_file, stri
   fo_vcf<<"##source= "<<VERSION<<"\n";
   fo_vcf<<"##input_bcf="<<bcf_file<<"\n";
   fo_vcf<<"##input_ped="<<ped_file<<"\n";
-  fo_vcf<<"##cutoff_read_depth="<<RD_cutoff<<"\n";
+  fo_vcf<<"##cutoff_read_depth_child_snv="<<RD_cutoff_child_snv<<"\n";
+  fo_vcf<<"##cutoff_read_depth_father_snv="<<RD_cutoff_father_snv<<"\n";
+  fo_vcf<<"##cutoff_read_depth_mother_snv="<<RD_cutoff_mother_snv<<"\n";
   fo_vcf<<"##cutoff_posterior_probability="<<PP_cutoff<<"\n";
   fo_vcf<<"##mutation_rate_snp="<<snp_mrate<<"\n";
   fo_vcf<<"##mutation_rate_indel="<<indel_mrate<<"\n";
@@ -309,13 +316,13 @@ int callDenovoFromBCF(string ped_file, string bcf_file,
 	snp_total_count++;			
 	trio_like_snp(child_snp, mom_snp, dad_snp, flag, 
 		      tgtSNP, lookupSNP, op_vcf_f, fo_vcf, 
-		      PP_cutoff, RD_cutoff, snp_pass_count);   			
+		      PP_cutoff, RD_cutoff_child_snv, RD_cutoff_father_snv, RD_cutoff_mother_snv, snp_pass_count);   			
       }   
       else if ( is_indel == 1 ) {
 	indel_total_count++;
 	trio_like_indel(&child_indel, &mom_indel, &dad_indel, flag, 
 			tgtIndel, lookupIndel, mu_scale, op_vcf_f, fo_vcf, 
-			PP_cutoff, RD_cutoff, indel_pass_count);    
+			PP_cutoff, 0, indel_pass_count);    
       }
       else if ( is_indel < 0 ) {
 	printf("\n BCF PARSING ERROR - Trios!  %d\n Exiting !\n", is_indel);
@@ -330,7 +337,7 @@ int callDenovoFromBCF(string ped_file, string bcf_file,
 	if ( is_indel == 0 ) {
 	  pair_total_count++;
 	  pair_like (tumor, normal, tgtPair, lookupPair, flag, op_vcf_f, fo_vcf, 
-		     PP_cutoff, RD_cutoff, pair_pass_count);    
+		     PP_cutoff, RD_cutoff_child_snv, pair_pass_count);    
 	}	
 	else if ( is_indel < 0 ) {
 	  printf("\n BCF PARSING ERROR - Paired Sample!  %d\n Exiting !\n", is_indel);
@@ -376,7 +383,7 @@ int mainDNG(int argc, char *argv[])
     static struct option long_options[] = {{"ped", 1, 0, 0}, 
 					   {"bcf", 1, 0, 1},  {"snp_mrate", 1, 0, 2}, {"indel_mrate", 1, 0, 3}, 
 					   {"poly_rate", 1, 0, 4}, {"pair_mrate", 1, 0, 5}, {"indel_mu_scale", 1, 0, 6}, {"output_vcf", 1, 0, 7},
-					   {"pp_cutoff", 1, 0, 8}, {"rd_cutoff", 1, 0, 9}, {"h", 1, 0, 10}, {"vcf", 1, 0, 11}, {"region", 1, 0, 12}};
+					   {"pp_cutoff", 1, 0, 8}, {"rd_cutoff_child_snv", 1, 0, 9}, {"h", 1, 0, 10}, {"vcf", 1, 0, 11}, {"region", 1, 0, 12}, {"rd_cutoff_father_snv", 1, 0, 13}, {"rd_cutoff_mother_snv", 1, 0, 14}};
     int c = getopt_long (argc-1, argv+1, "", long_options, &option_index);
     if (c == -1)
       break;
@@ -417,8 +424,8 @@ int mainDNG(int argc, char *argv[])
 	cerr<<"\nposterior probability cutoff: "<<PP_cutoff;
 	break;
       case 9:
-	RD_cutoff = atoi(optarg);
-	cerr<<"\nread depth filter: "<<RD_cutoff;
+	RD_cutoff_child_snv = atoi(optarg);
+	cerr<<"\nread depth child snv filter: "<<RD_cutoff_child_snv;
 	break;
       case 10:
 	usage();
@@ -430,6 +437,15 @@ int mainDNG(int argc, char *argv[])
       case 12:
 	region = optarg;
 	break;
+      case 13:
+        RD_cutoff_father_snv = atoi(optarg);
+        cerr<<"\nread depth father snv filter: "<<RD_cutoff_father_snv;
+        break;
+      case 14:
+        RD_cutoff_mother_snv = atoi(optarg);
+        cerr<<"\nread depth mother snv filter: "<<RD_cutoff_mother_snv;
+        break;
+
       default:
 	usage();
       }
